@@ -169,6 +169,17 @@ public class KCommands {
         inputConnection.commitText("", 1);
     }
 
+    public void undo() {
+        //CharSequence selected = inputConnection.getSelectedText(0);
+        //if(selected == null || selected.length() == 0 ) {
+        inputConnection.performContextMenuAction(android.R.id.undo);
+        //}
+    }
+
+    public void redo() {
+        inputConnection.performContextMenuAction(android.R.id.redo);
+    }
+
     //copy all
     public void yy(int n) {
         int currentPosition = getCursorPosition();
@@ -233,6 +244,16 @@ public class KCommands {
     public void fancy(int n, String parameter) {
         for(int i=0;i<n;i++) {
             inputConnection.commitText(ConvertUnicode.convert(buffer, parameter), 1);
+        }
+    }
+
+    //ZALGO! HE COMES!
+    public void zalgo(int n, String parameter) {
+        int up = Integer.valueOf(parameter.split(";")[0]);
+        int mid = Integer.valueOf(parameter.split(";")[1]);
+        int down = Integer.valueOf(parameter.split(";")[2]);
+        for(int i=0;i<n;i++) {
+            inputConnection.commitText(Zalgo.goZalgo(buffer, up, mid, down), 1);
         }
     }
 

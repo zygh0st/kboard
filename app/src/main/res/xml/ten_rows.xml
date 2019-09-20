@@ -61,6 +61,18 @@
         <Key android:codes="-131"   android:keyLabel="TEST" />
         <Key android:codes="-132"   android:keyLabel="TEST" />
     </Row>
+    <Row>
+        <Key android:codes="-133"   android:keyLabel="TEST" />
+        <Key android:codes="-134"   android:keyLabel="TEST" />
+        <Key android:codes="-135"   android:keyLabel="TEST" />
+        <Key android:codes="-136"   android:keyLabel="TEST" />
+    </Row>
+    <Row>
+        <Key android:codes="-137"   android:keyLabel="TEST" />
+        <Key android:codes="-138"   android:keyLabel="TEST" />
+        <Key android:codes="-139"   android:keyLabel="TEST" />
+        <Key android:codes="-140"   android:keyLabel="TEST" />
+    </Row>
 
     <Row android:keyHeight="45dp"
         >

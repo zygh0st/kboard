@@ -97,7 +97,16 @@ public class KboardIME  extends InputMethodService
     }
 
     private void setKeyboard() {
-        if(mRows == 8) {
+
+        if(mRows == 12) {
+            keyboard = new KBoard(this, R.xml.twelve_rows);
+        } else if (mRows == 11) {
+            keyboard = new KBoard(this, R.xml.eleven_rows);
+        } else if (mRows == 10) {
+            keyboard = new KBoard(this, R.xml.ten_rows);
+        } else if (mRows == 9) {
+            keyboard = new KBoard(this, R.xml.nine_rows);
+        } else if (mRows == 8) {
             keyboard = new KBoard(this, R.xml.eight_rows);
         } else if (mRows == 7) {
             keyboard = new KBoard(this, R.xml.seven_rows);
@@ -197,7 +206,7 @@ public class KboardIME  extends InputMethodService
         switch(primaryCode) {
             case -5: //backspace
 
-                commands.d(1);
+                //commands.d(1);
                 break;
             case -6: //MAD
                 switchScreens();
@@ -213,6 +222,12 @@ public class KboardIME  extends InputMethodService
                 Intent i = new Intent(this, PrefsActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
+                break;
+            case -401: //undo
+                commands.undo();
+                break;
+            case -402: //redo
+                commands.redo();
                 break;
             default:
                 String keyString = getKeyString(primaryCode);
@@ -247,22 +262,47 @@ public class KboardIME  extends InputMethodService
             try {
                 InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
                 final IBinder token = Objects.requireNonNull(this.getWindow().getWindow()).getAttributes().token;
+                imm.switchToLastInputMethod(token);
                 //imm.setInputMethod(token, LATIN);
-                imm.switchToNextInputMethod(token, false);
+                //imm.switchToNextInputMethod(token, false);
             } catch (Throwable t) { // java.lang.NoSuchMethodError if API_level<11
-                mInputMethodManager.showInputMethodPicker();
+                //mInputMethodManager.showInputMethodPicker();
                 Log.e(TAG, "cannot set the previous input method:");
                 t.printStackTrace();
             }
+                //this.switchToPreviousInputMethod();
 
 
     }
     @Override
     public void onKey(int primaryCode, int[] keyCodes) {
+
+        switch(primaryCode) {
+            case -5:
+                //commands.d(1);
+                keyDownUp(67);
+                return;
+            default:
+        }
+    }
+
+    private void keyDownUp(int keyEventCode) {
+        InputConnection ic = getCurrentInputConnection();
+        ic.sendKeyEvent(new KeyEvent(0, keyEventCode));
+        ic.sendKeyEvent(new KeyEvent(1, keyEventCode));
     }
 
     @Override
     public void onPress(int primaryCode) {
+        InputConnection ic = getCurrentInputConnection();
+        KCommands commands = new KCommands(
+                this,
+                ic,
+                getCurrentInputEditorInfo(),
+                keys,
+                mAutoSpace,
+                mPassiveAggressive);
+
     }
 
     @Override
@@ -306,10 +346,6 @@ public class KboardIME  extends InputMethodService
     public static class Keys {
         public static ArrayList<String> getDefault() {
             ArrayList<String> defaultKeys = new ArrayList<>();
-            defaultKeys.add("k");
-            defaultKeys.add("lol!");
-            defaultKeys.add("Good thanks, yourself?");
-            defaultKeys.add("thanks");
             defaultKeys.add("👍");
             defaultKeys.add("ಠ_ಠ");
             defaultKeys.add("haha");
@@ -326,26 +362,160 @@ public class KboardIME  extends InputMethodService
                 defaultKeys.add("/𝕒𝕓𝕔!ds,fancy(double)");
                 defaultKeys.add("/𝔞𝔟𝔠!ds,fancy(fancy)");
                 defaultKeys.add("/𝖆𝖇𝖈!ds,fancy(fancybold)");
+                defaultKeys.add("/ɐqɔ!ds,fancy(inverted)");
+                defaultKeys.add("/Adↄ!ds,fancy(reversed)");
+                defaultKeys.add("/ﾑ乃c!ds,fancy(cjkthai)");
+                defaultKeys.add("/ₐbc!ds,fancy(subscript)");
+                defaultKeys.add("/ᵃᵇᶜ!ds,fancy(superscript)");
+                defaultKeys.add("/ﾑ乃ς!ds,fancy(zyrillic)");
+                defaultKeys.add("/ﾑ乃ς!ds,fancy(zyrillian)");
+                defaultKeys.add("/Zalgo!ds,zalgo(8;8;8)");
             }
 
             defaultKeys.add("/catfact!curl(https://kboard-api.glitch.me/catfact");
             defaultKeys.add("ಥ_ಥ");
-            defaultKeys.add("thank you");
-            defaultKeys.add("sorry");
             defaultKeys.add("( ͡° \u035Cʖ ͡°)");
             defaultKeys.add("(╯°□°）╯︵ ┻━┻");
-            defaultKeys.add("hey!");
-            defaultKeys.add("cool");
+            //defaultKeys.add("ノ┬─┬ノ︵ ( \o°o)\");
+            defaultKeys.add("┬──┬◡ﾉ(° -°ﾉ)");
+            defaultKeys.add("ᕕ( ᐛ )ᕗ");
+            defaultKeys.add("(⊙_☉)");
+            defaultKeys.add("ᕦ(ò_óˇ)ᕤ");
+            defaultKeys.add("(‿|‿)");
+            defaultKeys.add("( . Y . )");
+            defaultKeys.add("(◡ ‿ ◡ ✿)");
+            defaultKeys.add("ლ(ಠ益ಠლ)");
+            defaultKeys.add("（^人^）");
+            defaultKeys.add("┣▇▇▇═──");
+            defaultKeys.add("~=[,,_,,]:3");
+            defaultKeys.add("ʕ •ᴥ•ʔ");
+            defaultKeys.add("┌∩┐(◣_◢)┌∩┐");
+            defaultKeys.add("(⊙ω⊙)");
+            defaultKeys.add("t(-.-t)");
+            defaultKeys.add("( ˘ ³˘)♥");
+            defaultKeys.add("(• ε •)");
+            defaultKeys.add("¯\\(º_o)/¯");
+            defaultKeys.add("(ﾉಥ益ಥ）ﾉ ┻━┻");
+            defaultKeys.add("(╯°□°)╯︵ ʞooqǝɔɐɟ");
+            defaultKeys.add("ヾ(⌐■_■)ノ♪");
+            defaultKeys.add("| (• ◡•)| (❍ᴥ❍ʋ)");
+            defaultKeys.add("(╥﹏╥)");
+            defaultKeys.add("┬┴┬┴┤(･_├┬┴┬┴");
+            defaultKeys.add("ʕノ•ᴥ•ʔノ ︵ ┻━┻");
+            defaultKeys.add("(づ￣ ³￣)づ");
+            defaultKeys.add("◉‿◉");
+            defaultKeys.add("(ノ ゜Д゜)ノ ︵ ┻━┻");
+            defaultKeys.add("(/ .□.)\\ ︵╰(゜Д゜)╯︵ /(.□. \\)");
+            defaultKeys.add("(ó ì_í)=óò=(ì_í ò)");
+            defaultKeys.add("(╯°Д°）╯︵ /(.□ . \\)");
+            defaultKeys.add("ᕙ(⇀‸↼‶)ᕗ");
+            defaultKeys.add("(   ° ᴗ°)~ð  (/❛o❛\\)");
+            defaultKeys.add("(=^ェ^=)");
+            defaultKeys.add("ノ(ジ)ー'");
+            defaultKeys.add("(づ｡◕‿‿◕｡)づ");
+            defaultKeys.add("╮ (. ❛ ᴗ ❛.) ╭");
+            defaultKeys.add("(/¯◡ ‿ ◡)/¯ ~ ┻━┻");
+            defaultKeys.add("ᶘ ᵒᴥᵒᶅ");
+            defaultKeys.add("(ノ^_^)ノ┻━┻ ┬─┬ ノ( ^_^ノ)");
+            defaultKeys.add("(V) (°,,,,°) (V)");
+            defaultKeys.add("(っ˘ڡ˘ς)");
+            defaultKeys.add("(╯°□°)╯︵ ┻━┻ ︵ ╯(°□° ╯)");
+            defaultKeys.add("（。々°）");
+            defaultKeys.add("ლ(╹◡╹ლ)");
+            defaultKeys.add("♥‿♥");
+            defaultKeys.add("(◐‿◑)");
+            defaultKeys.add("︻デ═一");
+            defaultKeys.add("♪┏(・o･)┛♪┗ ( ･o･) ┓♪");
+            defaultKeys.add("(+[__]∙:∙)");
+            defaultKeys.add("┬┴┬┴┤ʕ•ᴥ├┬┴┬┴");
+            defaultKeys.add("( ＾◡＾)っ✂╰⋃╯");
+            defaultKeys.add("<コ:彡");
+            defaultKeys.add("☆.。.:*・°☆.。.:*・°☆.。.:*・°☆.。.:*・°☆");
+            defaultKeys.add("(°ロ°)☝");
+            defaultKeys.add("( ・∀・)っ旦");
+            defaultKeys.add("\\(-ㅂ-)/ ♥ ♥ ♥");
+            defaultKeys.add("(σ・・)σ");
+            defaultKeys.add("＼(＾O＾)／");
+            defaultKeys.add("(ﾉಥДಥ)ﾉ︵┻━┻･/");
+            defaultKeys.add("¬_¬");
+            defaultKeys.add("(⌐■_■)");
+            defaultKeys.add("[¬º-°]¬");
+            defaultKeys.add("｡◕ ‿ ◕｡");
+            defaultKeys.add("(－‸ლ)");
+            defaultKeys.add("♒((⇀‸↼))♒");
+            defaultKeys.add("┗[© ♒ ©]┛ ︵ ┻━┻");
+            defaultKeys.add("(☞ﾟ∀ﾟ)☞");
+            defaultKeys.add("（ -.-）ノ-=≡≡卍");
+            defaultKeys.add("（*＾＾）/~~~~◎");
+            defaultKeys.add("人◕ ‿‿ ◕人");
+            defaultKeys.add("ಠ_ರೃ");
+            defaultKeys.add("(._.) ~ ︵ ┻━┻");
+            defaultKeys.add("[^._.^]ﾉ彡");
+            defaultKeys.add("(ノ・∀・)ノ");
+            defaultKeys.add("し(*・∀・)／♡＼(・∀・*) ///");
+            defaultKeys.add("ლ(o◡oლ)");
+            defaultKeys.add("(｡´ ‿｀♡)");
+            defaultKeys.add("(∩｀-´)⊃━☆ﾟ.*･｡ﾟ");
+            defaultKeys.add("ヽ(^o^)ρ┳┻┳°σ(^o^)/");
+            defaultKeys.add("(ノ`Д ́)ノ");
+            defaultKeys.add("(ﾉ^_^)ﾉ");
+            defaultKeys.add("|̲̅̅●̲̅̅|̲̅̅=̲̅̅|̲̅̅●̲̅̅|");
+            defaultKeys.add("(ღ˘⌣˘ღ)");
+            defaultKeys.add("(✿◕‿◕✿)");
+            defaultKeys.add("(°◡°♡).:｡");
+            defaultKeys.add("─=≡Σ(([ ⊐•̀⌂•́]⊐");
+            defaultKeys.add("( ° ͜ʖ °)");
+            defaultKeys.add("٩(̾●̮̮̃̾•̃̾)۶");
+            defaultKeys.add("└[∵┌]└[ ∵ ]┘[┐∵]┘");
+            defaultKeys.add("ᕙ( ͡° ͜ʖ ͡°)ᕗ");
+            defaultKeys.add("(*☌ᴗ☌)｡");
+            defaultKeys.add("(・ω・)");
+            defaultKeys.add("ｏ(￣ρ￣)ｏ");
+            defaultKeys.add("(｡◕‿◕｡)");
+            defaultKeys.add("(●°u°●)​ 」");
+            defaultKeys.add("☆*✲ﾟ*｡(((´♡‿♡`+)))｡*ﾟ✲*☆");
+            defaultKeys.add("(ÒДÓױ)");
+            defaultKeys.add("ʕ⁎̯͡⁎ʔ༄");
+            defaultKeys.add("(Ó_#)ò=(°□°ò)");
+            defaultKeys.add("(- o - ) zzZ ☽");
+            defaultKeys.add("(~^.^)~");
+            defaultKeys.add("ʘ‿ʘ");
+            defaultKeys.add("(｡-_-｡ )人( ｡-_-｡)");
+            defaultKeys.add("(._.) ( l: ) ( .-. ) ( :l ) (._.)");
+            defaultKeys.add("|ʘ‿ʘ)╯");
+            defaultKeys.add("(ლ `Д ́)ლ");
+            defaultKeys.add("(⊙＿⊙')");
+            defaultKeys.add("(:3 っ)っ");
+            defaultKeys.add("d-_-b");
+            defaultKeys.add("\\m/...(>.<)…\\m/");
+            defaultKeys.add("♪ (｡´＿●`)ﾉ┌iiii┐ヾ(´○＿`*) ♪");
+            defaultKeys.add("\\( •_•)_†");
+            defaultKeys.add("٩(͡๏̯͡๏)۶");
+            defaultKeys.add("ϵ( 'Θ' )϶");
+            defaultKeys.add("(-.-(-.(-(-.(-.-).-)-).-)-.-)");
+            defaultKeys.add("( ́・ω・`)");
+            defaultKeys.add("♪~♪ ヽ໒(⌒o⌒)७ﾉ ♪~♪");
+            defaultKeys.add("┌( ಠ_ಠ)┘");
+            defaultKeys.add("\\|°▿▿▿▿°|/");
+            defaultKeys.add("ヾ(＠⌒ー⌒＠)ノ");
+            defaultKeys.add("༼;´༎ຶ ۝ ༎ຶ༽");
+            defaultKeys.add("┐(￣ー￣)┌");
+            defaultKeys.add("( ・∀・)っ♨");
+            defaultKeys.add("¯\\_(シ)_/¯");
+            defaultKeys.add("¯\\_ಠ_ಠ_/¯");
+            defaultKeys.add("(・ε・)");
+            defaultKeys.add("(　-_･)σ - - - - - - - - ･");
+            defaultKeys.add("dL-_-b");
+            defaultKeys.add("<(-'.'-)>");
+            defaultKeys.add("◎ヽ(^･ω･^=)~");
+            defaultKeys.add("(´∀｀)♡");
+            defaultKeys.add("(｡･ω･｡)ﾉ♡");
+            defaultKeys.add("(  ⚆ _ ⚆ )");
+            defaultKeys.add("♡＾▽＾♡");
+            defaultKeys.add("(̿▀̿ ̿Ĺ̯̿̿▀̿ ̿)̄");
+            defaultKeys.add("[+..••]");
+            defaultKeys.add("ε=ε=ε=ε=ε=ε=┌(;￣◇￣)┘");
 
-            defaultKeys.add("yes");
-            defaultKeys.add("no");
-            defaultKeys.add("maybe");
-            defaultKeys.add("don't mind");
-            defaultKeys.add("sure, whatever");
-            defaultKeys.add("xxx");
-            defaultKeys.add("Can't talk now. Speak later.");
-            defaultKeys.add("I'll be late");
-            defaultKeys.add("okay");
 
             defaultKeys.add("/Italicise Previous!dw,i(_$0_)");
             defaultKeys.add("/Italicise Next!i(__),j");

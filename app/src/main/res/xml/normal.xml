@@ -17,7 +17,7 @@
 
         <Key android:codes="-106" android:keyLabel="TEST"/>
         <Key android:codes="-105" android:keyLabel="ಠ_ಠ"/>
-        <Key android:codes="-107"  android:keyLabel="TES" />
+        <Key android:codes="-107"  android:keyLabel="TEST" />
         <Key android:codes="-108"   android:keyLabel="TEST"/>
     </Row>
     <Row>
@@ -30,15 +30,16 @@
 
     <Row android:keyHeight="45dp"
         >
-
         <Key android:codes="-6" android:keyLabel="\u21EA"
-            android:keyWidth="20%p" android:isModifier="true"
+            android:keyWidth="16.6%p" android:isModifier="true"
             android:isSticky="true"/>
 
-        <Key android:codes="-201"  android:keyWidth="20%p"  android:keyIcon="@drawable/ic_ime_switcher_dark"/>
-        <Key android:codes="-301" android:keyWidth="20%p" android:keyIcon="@drawable/ic_settings_white_24dp" />
-        <Key android:codes="-5" android:keyWidth="20%p"   android:keyLabel="\u232b" android:isRepeatable="true"/>
-        <Key android:codes="10"  android:keyWidth="20%p" android:keyLabel="\u21b5"  android:keyEdgeFlags="right"/>
+        <!--<Key android:codes="-201"  android:keyWidth="16.6%p"  android:keyIcon="@drawable/ic_ime_switcher_dark"/>-->
+        <Key android:codes="-301" android:keyWidth="16.6%p" android:keyIcon="@drawable/ic_settings_white_24dp" />
+        <Key android:codes="-401" android:keyWidth="16.6%p" android:keyIcon="@drawable/sym_keyboard_undo" android:isRepeatable="false"/>
+        <Key android:codes="-402" android:keyWidth="16.6%p" android:keyIcon="@drawable/sym_keyboard_redo" android:isRepeatable="false"/>
+        <Key android:codes="-5" android:keyWidth="16.6%p"   android:keyIcon="@drawable/sym_keyboard_delete" android:isRepeatable="true"/>
+        <Key android:codes="10"  android:keyWidth="16.6%p" android:keyIcon="@drawable/sym_keyboard_return"  android:keyEdgeFlags="right"/>
 
     </Row>
 </Keyboard>

@@ -111,11 +111,11 @@ public class KboardView extends KeyboardView {
             } else if(key.label != null) {
                 String label = key.popupCharacters != null ? key.popupCharacters.toString() : key.label.toString();
                 boolean isCommandKey = label.length() > 2 && label.charAt(0) == '/' && label.indexOf("!") > 0;
-                if(key.codes[0] == 10) {
-                    mPaint.setTextSize(textSize + 32); //enter icon is small so make it bigger
-                } else {
+                //if(key.codes[0] == 10) {
+                    //mPaint.setTextSize(textSize + 32); //enter icon is small so make it bigger
+                //} else {
                     mPaint.setTextSize(textSize);
-                }
+                //}
                 if (isCommandKey) {
                     label = label.substring(1, label.indexOf("!"));
                     mPaint.setTypeface(Typeface.create(Typeface.DEFAULT, isBold ? Typeface.ITALIC : Typeface.BOLD_ITALIC));
